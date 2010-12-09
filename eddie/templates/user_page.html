@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Last actions for {{ username }}{% endblock %}
+{% block content %}
+  {% if actions %}
+    <ul>
+      {% for action in actions %}
+        <li><a href="actions/{{ action.id }}">{{ action.title }}</a> {{ action.when|date:"M. d Y" }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No actions found.</p>
+  {% endif %}
+{% endblock %}
