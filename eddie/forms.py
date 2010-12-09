@@ -10,6 +10,7 @@ Copyright (c) 2010 Ethical Detergent. All rights reserved.
 import re
 from django.contrib.auth.models import User
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
 
 class RegistrationForm(forms.Form):
   username = forms.CharField(label=u'Username', max_length=30)
@@ -38,3 +39,10 @@ class RegistrationForm(forms.Form):
     except User.DoesNotExist:
       return username
     raise forms.ValidationError('Username is already taken.')
+
+class ActionSaveForm(forms.Form):
+  title = forms.CharField(
+    label=u'Action',
+    widget=forms.TextInput(attrs={'size': 64})
+  )
+  when = forms.DateField(widget=SelectDateWidget())

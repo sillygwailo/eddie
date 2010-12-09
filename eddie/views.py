@@ -6,7 +6,9 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.shortcuts import render_to_response
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from eddie.forms import *
+from eddie.models import *
 
 def main_page(request):
     return render_to_response(
@@ -24,7 +26,7 @@ def user_page(request, username):
   except User.DoesNotExist:
     raise Http404(u'Requested user not found.')
 
-  actions = user.action_set.all()
+  actions = user.action_set.all().order_by('-when')
 
   variables = RequestContext(request, {
     'username': username,
@@ -48,3 +50,27 @@ def register_page(request):
     'form': form
   })
   return render_to_response('registration/register.html', variables)
+
+@login_required
+def action_save_page(request):
+  if request.method == 'POST':
+    form = ActionSaveForm(request.POST)
+    if form.is_valid():
+      # Update the date and person who did the action
+      action, created = Action.objects.get_or_create(
+        title=form.cleaned_data['title'],
+        when=form.cleaned_data['when'],
+        person = request.user       
+      )
+      if not created:
+        pass
+      action.save
+      return HttpResponseRedirect(
+        '/user/%s/' % request.user.username
+      )
+  else:
+    form = ActionSaveForm()
+  variables = RequestContext(request, {
+    'form': form
+  })
+  return render_to_response('action_save.html', variables)
