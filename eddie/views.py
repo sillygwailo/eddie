@@ -74,3 +74,27 @@ def action_save_page(request):
     'form': form
   })
   return render_to_response('action_save.html', variables)
+  
+def search_page(request):
+  form = SearchForm();
+  actions = []
+  show_results = False
+  if 'query' in request.GET:
+    show_results = True
+    query = request.GET['query'].strip()
+    if query:
+      form = SearchForm({'query': query})
+      actions = Action.objects.order_by('-when').filter(
+        title__icontains=query
+      )[:10]
+  variables = RequestContext(request, {
+    'form': form,
+    'actions': actions,
+    'show_results': show_results,
+    'show_user': True,
+  })
+  if request.GET.has_key('ajax'):
+    return render_to_response('actions_list.html', variables)
+  else:
+    return render_to_response('search.html', variables)
+  

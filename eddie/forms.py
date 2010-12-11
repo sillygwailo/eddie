@@ -46,3 +46,9 @@ class ActionSaveForm(forms.Form):
     widget=forms.TextInput(attrs={'size': 64})
   )
   when = forms.DateField(widget=SelectDateWidget())
+
+class SearchForm(forms.Form):
+  query = forms.CharField(
+    label=u'Enter a keyword to search for',
+    widget=forms.TextInput(attrs={'size': 32})
+  )
