@@ -3,6 +3,8 @@ function search_submit() {
   $("#search-results").load(
     "/search/?ajax&query="+encodeURIComponent(query)
   );
+  page = 'search';
+  history.pushState(page, query, '/search/?query='+encodeURIComponent(query));
   return false;
 }
 $(document).ready(function () {

@@ -45,7 +45,7 @@ class ActionSaveForm(forms.Form):
     label=u'Action',
     widget=forms.TextInput(attrs={'size': 64})
   )
-  when = forms.DateField(widget=SelectDateWidget())
+  when = forms.DateField(widget=SelectDateWidget(years=(2009,2010,)),required=False)
 
 class SearchForm(forms.Form):
   query = forms.CharField(

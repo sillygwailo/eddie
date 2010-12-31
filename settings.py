@@ -17,6 +17,7 @@ DATABASES = {
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'TEST_NAME': 'test_eddie'
     }
 }
 
@@ -91,6 +92,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.admin',
     'django_eddie.eddie',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',

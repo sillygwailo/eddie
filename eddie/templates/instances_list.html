@@ -1,0 +1,16 @@
+{% if instances %}
+  <ul class="instances">
+    {% for instance in instances %}
+      <li class="instance"><span class="action-title">{% if link_action %}<a href="/action/{{ instance.action.id }}/">{{ instance.action.title }}</a>{% else %}{{ instance.action.title }}{% endif %}</span> 
+          <span class="instance-date">{{ instance.when|date:"M. d Y" }}</span>
+          {% if show_user %}
+            <span class="instance-username">{{ instance.person.username }}</span>
+          {% endif %}
+          {% if perms.eddie.delete_actioninstance and instance.person.username == user.username %}
+            <span class="delete-instance">[<a href="/delete/{{ instance.id }}/">x</a>]</span>
+          {% endif %}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No instances found.</p>
+{% endif %}

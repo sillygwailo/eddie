@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Last actions for {{ username }}{% endblock %}
+{% block head %}Last actions for {{ username }}{% endblock %}
 {% block content %}
-  {% include "actions_list.html" %}
+{% ifequal user.username username %}
+  <a href="/friends/{{ username }}/">view your friends</a>
+{% else %}
+  {% if is_friend %}
+    <a href="/friends/{{ user.username }}/">{{  username }} is a friend of yours</a> [<a class="edit" href="/friend/remove/?username={{ username }}">remove</a>]
+  {% else %}
+    <a href="/friend/add/?username={{ username }}">add {{ username }} to your friends</a>
+  {% endif %}
+   - <a href="/friends/{{ username }}/">view {{ username }}'s friends</a>
+{% endifequal %}
+  {% include "instances_list.html" %}
 {% endblock %}
