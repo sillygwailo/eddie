@@ -11,6 +11,7 @@ import re
 from django.contrib.auth.models import User
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
+from captcha.fields import CaptchaField
 
 class RegistrationForm(forms.Form):
   username = forms.CharField(label=u'Username', max_length=30)
@@ -23,6 +24,7 @@ class RegistrationForm(forms.Form):
     label=u'Password (Again)',
     widget=forms.PasswordInput()
   )
+  captcha = CaptchaField(help_text=u'Are you human?')
   def clean_password2(self):
     if 'password1' in self.cleaned_data:
       password1 = self.cleaned_data['password1']

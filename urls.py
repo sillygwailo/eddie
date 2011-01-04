@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from eddie.views import *
+from captcha import urls
 
 admin.autodiscover()
 
@@ -18,13 +19,14 @@ urlpatterns = patterns('',
   (r'^action/(\d+)/$', action_page),
   (r'^delete/(\d+)/$', delete_instance),
   (r'^actions/$', actions_list),
-    
+
   # Session management
   (r'^login/$', 'django.contrib.auth.views.login'),
   (r'^logout/$', logout_page),
   (r'^register/$', register_page),
   (r'^register/success/$', direct_to_template, {'template': 'registration/register_success.html'}),
-
+  (r'^captcha/', include('captcha.urls')),
+  
   # Account management
   (r'^save/', action_save_page),  
 
@@ -41,7 +43,4 @@ urlpatterns = patterns('',
 
    # Ajax
    (r'^ajax/action/autocomplete/$', ajax_action_autocomplete),
-
-
-
 )

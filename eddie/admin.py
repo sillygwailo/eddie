@@ -1,5 +1,5 @@
 from django.contrib import admin
-from eddie.models import *
+from models import *
 
 class ActionAdmin(admin.ModelAdmin):
   pass

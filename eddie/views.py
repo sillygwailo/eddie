@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from datetime import datetime
 from django.utils.translation import ugettext as _
 
-from eddie.forms import *
-from eddie.models import *
+from forms import *
+from models import *
 
 def main_page(request):
     return render_to_response(

@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django_eddie.eddie',
+    'captcha', # http://code.google.com/p/django-simple-captcha/
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
