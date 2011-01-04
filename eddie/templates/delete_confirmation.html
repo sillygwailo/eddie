@@ -4,7 +4,7 @@
 {% load i18n %}>
 {% block content %}
   Delete instance associated with "{{ action.title }}" and dated {{ when|date:"M. j, Y" }}?
-  <form action="." method="post">{% csrf_token %}
+  <form id="delete-confirmation-form" action="." method="post">{% csrf_token %}
     <div>
     <input type="hidden" name="post" value="yes" />
     <input type="submit" value="{% trans "Yes, I'm sure" %}" />
