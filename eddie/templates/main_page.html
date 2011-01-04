@@ -3,7 +3,7 @@
 {% block head %}Welcome to Django Eddie{% endblock %}
 {% block content %}
   {% if user.username %}
-    <p class="welcome-authenticated">Welcome <a href="user/{{ user.username }}">{{ user.username }}</a>! Here you can store your last action!</p>
+    <p class="welcome-authenticated">Welcome <a href="/user/{{ user.username }}/">{{ user.username }}</a>! Here you can store your last action!</p>
     {% if actions %}
       <ul class="actions">
         {% for action in actions %}
