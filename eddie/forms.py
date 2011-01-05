@@ -42,6 +42,9 @@ class RegistrationForm(forms.Form):
       return username
     raise forms.ValidationError('Username is already taken.')
 
+class InstanceUpdateForm(forms.Form):
+  when = forms.DateField(widget=SelectDateWidget(years=(2009,2010,)),required=False)
+
 class ActionSaveForm(forms.Form):
   title = forms.CharField(
     label=u'Action',

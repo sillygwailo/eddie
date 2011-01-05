@@ -19,6 +19,7 @@ urlpatterns = patterns('',
   (r'^action/(\d+)/$', action_page),
   (r'^delete/(\d+)/$', delete_instance),
   (r'^actions/$', actions_list),
+  (r'^update/(\d+)/$', update_instance),
 
   # Session management
   (r'^login/$', 'django.contrib.auth.views.login'),

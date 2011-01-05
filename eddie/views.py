@@ -144,6 +144,32 @@ def friends_page(request, username):
   })
   return render_to_response('friends_page.html', variables)
 
+@permission_required('eddie.change_actioninstance', '/login/')
+def update_instance(request, instance_id):
+  instance = get_object_or_404(ActionInstance, id=instance_id)
+  if request.user.username == instance.person.username:
+    if request.method == 'POST':
+      form = InstanceUpdateForm(request.POST)
+      if form.is_valid():
+        instance = ActionInstance.objects.get(id=instance_id)
+        instance.when = form.cleaned_data['when']
+        instance.save()
+        request.user.message_set.create(
+          message=_(u'Instance ID %s was updated.') % instance_id
+        )
+    else:
+      initial = {'title': instance.action.title, 'when': instance.when}
+      form = InstanceUpdateForm(initial=initial)
+      variables = RequestContext(request, {
+        'instance': instance,   
+        'form': form,    
+      })
+      return render_to_response('instance_update.html', variables)
+  request.user.message_set.create(
+    message=_(u'You don\'t have access to update this instance.')
+  )
+  return HttpResponseRedirect('/user/%s/' % request.user.username)
+
 @permission_required('eddie.delete_actioninstance', '/login/')
 def delete_instance(request, instance_id):
   instance = get_object_or_404(ActionInstance, id=instance_id)

@@ -8,6 +8,9 @@
           {% endif %}
           {% if perms.eddie.delete_actioninstance and instance.person.username == user.username %}
             <span class="delete-instance">[<a href="/delete/{{ instance.id }}/">x</a>]</span>
+          {% endif %}
+          {% if perms.eddie.change_actioninstance and instance.person.username == user.username %}
+            <span class="update-instance-link">[<a href="/update/{{ instance.id }}/">u</a>]</span>
           {% endif %}</li>
     {% endfor %}
   </ul>
