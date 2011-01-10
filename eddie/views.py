@@ -132,17 +132,58 @@ def actions_list(request):
 def friends_page(request, username):
   person = get_object_or_404(User, username=username)
   friends = [friendship.to_friend for friendship in person.friend_set.all()]
-  friend_actions = Action.objects.filter(
+  friend_instances = ActionInstance.objects.filter(
     person__in=friends
   ).order_by('-id')
   variables = RequestContext(request, {
     'username': username,
     'friends': friends,
-    'actions': friend_actions[:10],
+    'instances': friend_instances[:10],
     'show_tags': True,
     'show_user': True,
   })
   return render_to_response('friends_page.html', variables)
+
+@login_required
+def friend_add(request):
+  if 'username' in request.GET:
+    friend = get_object_or_404(
+      User, username=request.GET['username']
+    )
+    friendship, created = Friendship.objects.get_or_create(
+      from_friend=request.user,
+      to_friend=friend
+    )
+    if created: 
+      friendship.save()
+      request.user.message_set.create(
+        message=u'%s was added to your friend list.' % friend.username
+      )
+    else:
+      request.user.message_set.create(
+        message=u'%s is already a friend of yours.' % friend.username
+      )
+    return HttpResponseRedirect('/friends/%s/' % request.user.username)
+  else:
+    raise Http404
+
+@login_required
+def friend_remove(request):
+  if 'username' in request.GET:
+    try:
+      friend = get_object_or_404(
+        User, username=request.GET['username']
+      )
+      friendship = Friendship.objects.get(
+        from_friend=request.user,
+        to_friend=friend
+      )
+      friendship.delete()
+      if 'HTTP_REFERER' in request.META:
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+      return HttpResponseRedirect('/user/%s/' % request.user.username)
+    except friend.DoesNotExist:
+      raise Http404('Friendship does not exist.')
 
 @permission_required('eddie.change_actioninstance', '/login/')
 def update_instance(request, instance_id):
@@ -195,24 +236,6 @@ def delete_instance(request, instance_id):
       return HttpResponseRedirect(request.META['HTTP_REFERER'])
     return HttpResponseRedirect('/user/%s/' % request.user.username)
 
-@login_required
-def friend_remove(request):
-  if 'username' in request.GET:
-    try:
-      friend = get_object_or_404(
-        User, username=request.GET['username']
-      )
-      friendship = Friendship.objects.get(
-        from_friend=request.user,
-        to_friend=friend
-      )
-      friendship.delete()
-      if 'HTTP_REFERER' in request.META:
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-      return HttpResponseRedirect('/user/%s/' % request.user.username)
-    except friend.DoesNotExist:
-      raise Http404('Friendship does not exist.')
-
 def ajax_action_autocomplete(request):
   if 'q' in request.GET:
     actions = Action.objects.filter(
@@ -220,26 +243,3 @@ def ajax_action_autocomplete(request):
     )[:10]
     return HttpResponse(u'\n'.join(action.title for action in actions))
   return HttpResponse()
-
-@login_required
-def friend_add(request):
-  if 'username' in request.GET:
-    friend = get_object_or_404(
-      User, username=request.GET['username']
-    )
-    friendship, created = Friendship.objects.get_or_create(
-      from_friend=request.user,
-      to_friend=friend
-    )
-    if created: 
-      friendship.save()
-      request.user.message_set.create(
-        message=u'%s was added to your friend list.' % friend.username
-      )
-    else:
-      request.user.message_set.create(
-        message=u'%s is already a friend of yours.' % friend.username
-      )
-    return HttpResponseRedirect('/friends/%s/' % request.user.username)
-  else:
-    raise Http404
