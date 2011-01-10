@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Update instance{% endblock %}
+{% block head %}Update instance{% endblock %}
+{% block content %}
+  <form action="." method="post">
+    <input name="dummy" value="{{ instance.action.title }}" disabled />    
+    {{ form.as_p }}{% csrf_token %}
+    <input type="submit" value="update">    
+  </form>
+{% endblock %}
