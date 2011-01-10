@@ -12,8 +12,11 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from captcha.fields import CaptchaField
+from datetime import date
 
-class RegistrationForm(forms.Form):
+YEARS_CHOICES = range(date.today().year - 1, date.today().year + 1)
+
+class RegistrationForm(forms.Form):    
   username = forms.CharField(label=u'Username', max_length=30)
   email = forms.EmailField(label=u'Email')
   password1 = forms.CharField(
@@ -43,14 +46,14 @@ class RegistrationForm(forms.Form):
     raise forms.ValidationError('Username is already taken.')
 
 class InstanceUpdateForm(forms.Form):
-  when = forms.DateField(widget=SelectDateWidget(years=(2009,2010,)),required=False)
+  when = forms.DateField(widget=SelectDateWidget(years=YEARS_CHOICES),required=False)
 
 class ActionSaveForm(forms.Form):
   title = forms.CharField(
     label=u'Action',
     widget=forms.TextInput(attrs={'size': 64})
   )
-  when = forms.DateField(widget=SelectDateWidget(years=(2009,2010,)),required=False)
+  when = forms.DateField(widget=SelectDateWidget(years=YEARS_CHOICES),required=False)
 
 class SearchForm(forms.Form):
   query = forms.CharField(
