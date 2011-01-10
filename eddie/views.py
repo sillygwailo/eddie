@@ -157,6 +157,7 @@ def update_instance(request, instance_id):
         request.user.message_set.create(
           message=_(u'Instance ID %s was updated.') % instance_id
         )
+        return HttpResponseRedirect('/user/%s/' % request.user.username)
     else:
       initial = {'title': instance.action.title, 'when': instance.when}
       form = InstanceUpdateForm(initial=initial)
