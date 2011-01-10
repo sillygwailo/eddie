@@ -24,6 +24,11 @@ urlpatterns = patterns('',
   # Session management
   (r'^login/$', 'django.contrib.auth.views.login'),
   (r'^logout/$', logout_page),
+  (r'^login/reset/$', 'django.contrib.auth.views.password_reset', {'template_name': 'password/password_reset.html'}),
+  (r'^login/reset/confirm/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'password/password_reset_confirm.html'}),
+  (r'^login/reset/done/$', 'django.contrib.auth.views.password_reset_done', {'template_name': 'password/password_reset_done.html'}),    
+  (r'^login/reset/complete/$', 'django.contrib.auth.views.password_reset_complete', {'template_name': 'password/password_reset_complete.html'}),    
+  
   (r'^register/$', register_page),
   (r'^register/success/$', direct_to_template, {'template': 'registration/register_success.html'}),
   (r'^captcha/', include('captcha.urls')),

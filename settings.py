@@ -102,3 +102,6 @@ INSTALLED_APPS = (
 )
 
 LOGIN_URL = '/login/'
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
