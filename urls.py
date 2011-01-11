@@ -4,6 +4,7 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from eddie.views import *
 from captcha import urls
+from robots import urls
 
 admin.autodiscover()
 
@@ -49,4 +50,8 @@ urlpatterns = patterns('',
 
    # Ajax
    (r'^ajax/action/autocomplete/$', ajax_action_autocomplete),
+   
+     (r'^robots.txt$', include('robots.urls')),
+   
+   
 )
